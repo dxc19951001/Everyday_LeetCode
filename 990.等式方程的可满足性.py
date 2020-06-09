@@ -53,4 +53,60 @@ class Solution(object):
         return True
 
 
+class SolutionRank(object):
+    # 核心思想
+    # 按秩优化，在合并两棵树的时候，将树高度低的树合并到高度高的树上
+
+    class UnionFind:
+        # 定义一共并查集的类       
+        def __init__(self):
+            self.parent = list(range(26))
+            self.rank = len(self.parent)*[0]
+
+        
+        def find(self, index):
+            # 查找出每个数字的父节点，直到得出根节点
+            if index == self.parent[index]:
+                return index
+            self.parent[index] = self.find(self.parent[index])
+            return self.parent[index]
+        
+        def union(self, index1, index2):
+            # 将相同的根节点的数字链接起来
+            # 并判断哪颗树高，将低的树合并到高的树上
+            if self.rank[index1] > self.rank[index2]:
+                self.parent[self.find(index2)] = self.find(index1)
+            elif self.rank[index1] < self.rank[index2]:
+                self.parent[self.find(index1)] = self.find(index2)
+            else:
+                self.parent[self.find(index1)] = self.find(index2)
+                self.rank[index2] +=1
+                
+
+    def equationsPossible(self, equations):
+        uf = Solution.UnionFind()
+        # 找出所有等于关系的字母
+        # 将有相同根节点的数字构成一颗树
+        # 得到若干棵不同根的树
+        for st in equations:
+            if st[1] == "=":
+                index1 = ord(st[0]) - ord("a")
+                index2 = ord(st[3]) - ord("a")
+                uf.union(index1, index2)
+        
+        # 找到所有不等关系的字母
+        # 若判断两个不等关系的字母，是否在根相同的一棵树中
+        # 若在同一根的数中则返回false 
+        for st in equations:
+            if st[1] == "!":
+                index1 = ord(st[0]) - ord("a")
+                index2 = ord(st[3]) - ord("a")
+                if uf.find(index1) == uf.find(index2):
+                    return False
+        return True
+
+
+
+
+
 

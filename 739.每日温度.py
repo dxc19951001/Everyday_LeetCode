@@ -25,6 +25,8 @@ class Solution(object):
                 elif T[i] >= T[k]:
                     a +=1
                     if k == n-1:
+                        # 找到列表结束也没找到
+                        # 返回0
                         a =0                
             ans[i] = a
         return ans

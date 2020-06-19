@@ -6,7 +6,7 @@ class TreeNode(object):
         self.right = None
 
 class Solution(object):
-    def recoverFromPreorder(self, S: str) -> TreeNode:
+    def recoverFromPreorder1(self, S: str) -> TreeNode:
         
         # 核心思想：
         # 题目采用深度搜索先序遍历，并且如果节点只有一个子节点，那么保证该子节点为左子节点。
@@ -66,33 +66,73 @@ class Solution(object):
         
         return ans[0]            
         # 最后，返回构建好的树的根节点即可
+                
+
+   def recoverFromPreorder(self, S):
+       
+        # 核心思想
+        # 采用单调栈来解决
         
+        # 以输入"1-2--3--4-5--6--7"为例
+        # 采用深度搜索前序遍历，如果节点只有一个子节点，那么保证该子节点为左子节点。
+        # 那将其表示成 数值(深度)  的形式
+        # 1(0) 2(1) 3(2) 4(2) 5(1) 6(2) 7(2)
+        # 根节点1(0)先入栈，栈：[1(0)]
+        # 2(1) 由于深度比1(0)深 入栈,栈：[1(0), 2(1)]
+        # 3(2)深度比栈顶元素2(1)深 入栈，栈：[1(0), 2(1), 3(2)]
+        # 4(2)深度与栈顶元素3(2)一样，栈顶元素3(2)出栈，并挂至上一节点2(1)的左边（题意优先左子节点），栈：[1(0), 2(1)]
+        # 4(2)深度与栈顶元素2(1)深 入栈，栈：[1(0), 2(1), 4(2)]
+        # 5(1)深度比栈顶元素4(2)小，栈顶元素4(2)出栈，并挂至上一节点2(1)的右边（左子节点已经被挂过了),栈：[1(0), 2(1)]
+        # 5(1)深度与栈顶元素2(1)一样，栈顶元素2(1)出栈，并挂至上一节点1(0)的左边，栈：[1(0)]
+        # 5(1)深度比栈顶元素1(0)深 入栈，栈：[1(0), 5(1)]
+        # 6(2)深度比栈顶元素5(1)深 入栈，栈：[1(0), 5(1), 6(2)]
+        # 7(2)深度与栈顶元素6(2)一样，栈顶元素6(2)出栈，并挂至上一节点5(1)的右边，栈：[1(0), 5(1)]
+        # 7(2)深度比栈顶元素5(1)深 入栈，栈：[1(0), 5(1), 7(2)]
+        # 对于栈中剩下的元素依次挂至上一节点的左子节点中，若左子节点有值，则挂至右子节点
+        # 直至栈中剩下根节点1(0)没问题得到解决
         
-    def recoverFromPreorder(self, S: str) -> TreeNode:
-        i = 0
-        stack = []
-        pre_depth = -1
-        pre_node = None
+
+        i = 0  # 初始化循环变量
+        stack = []  # 初始化栈
+        pre_depth = -1  # 初始化前一节点深度
         while i < len(S):
-            depth = 0
-            while S[i] == '-':
+            depth = 0  # 初始化当前节点深度 
+            while S[i] == '-':  # 当前数字前有几个'-'，代表深度为几
                 depth += 1
                 i += 1
-            value = ''
-            while i < len(S) and S[i].isdigit():
+            value = ''  # 初始化节点值
+            while i < len(S) and S[i].isdigit():  # 循环出该节点的值
                 value += S[i]
                 i += 1
             node = TreeNode(int(value))
             
-            if stack and depth == pre_depth + 1:
-                stack[-1].left = node
-            else:
-                for _ in range(pre_depth - depth + 1):
-                    stack.pop()
-                if stack:
-                    stack[-1].right = node
-            pre_depth = depth
-            stack.append(node)
-        return stack[0]
+            while stack and depth <= pre_depth:
+                # 栈不为空且，当前节点深度比之前节点深度小于或等于时出栈
+                out = stack.pop() # 出栈
+                if not stack[-1].left:  # 左子节点不为空，优先挂至左子节点
+                    stack[-1].left = out
+                else:  # 左子节点以有值，则挂至右子节点
+                    stack[-1].right = out
+                pre_depth -= 1  # 栈顶元素出栈后，之前节点的深度减1
+            pre_depth = depth  # 当前节点入栈后，改变之前节点的深度值
+            stack.append(node) # 入栈
 
+        # 入栈完毕，剩下的元素
+        while stack:
+            if len(stack) == 1:  # 当栈中剩下根节点时结束
+                break           
+            out1 = stack.pop()   # 最后一个节点依次出栈            
+            if not stack[-1].left:  # 优先挂至前一节点的左子节点
+                stack[-1].left = out1
+            else:  # 左子节点有值，挂至有子节点
+                stack[-1].right = out1         
+            
+        return stack[0]  # 返回根节点
+
+
+
+s = Solution()
+S = "1-2--3--4-5--6--7"
+a = s.recoverFromPreorder(S)
+print(a)
 

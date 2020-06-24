@@ -82,7 +82,7 @@ class Solution(object):
                         # 跳过重复的i
                         i += 1
                 elif s > 0:
-                    # s值大于，则移动j，使得s变小
+                    # s值大于0，则移动j，使得s变小
                     j -= 1
                     while i < j and nums[j] == nums[j + 1]:
                         # 跳过重复的j

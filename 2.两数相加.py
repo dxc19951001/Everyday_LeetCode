@@ -11,6 +11,24 @@ class Solution:
         # 类似加法的原理, 我们从低位（链条第一位）开始，同位相加，满10高位+1
         # 当两个链表和进位都为0时，则退出
 
+        # 设置头节点 ans = ListNode(0)
+        # 设置一个中间变量tmp，tmp = ans
+        # tmp和ans此时同时指向 ListNode(0)，共用一片内存空间
+        # 在计算一位加法完成后，得出值为x，则tmp = ans = ListNode(x)
+        # 设置tmp的下一个节点tmp.next,并令其值为ListNode(0) ,即ListNode(x).next= ListNode(0)
+        # 即tmp.next = ListNode(0) ，tmp和ans共有一片内存空间，则ans.next=ListNode(0) 
+        # tmp向后移动，令 tmp = tmp.next，此时ans和tmp不相等了，ans.next = tmp
+        
+        # 再进行依次加法运算，得出值为x1，则tmp = ListNode(x1)
+        # 设置tmp的下一个节点tmp.next,并令其值为ListNode(0) 
+        # 即tmp.next = ListNode(0)，即ListNode(x1).next= ListNode(0)
+        # 再使tmp向后移动，令 tmp = tmp.next，
+
+        # 此时构建出链表：ListNode(x)-->ListNode(x1)-->ListNode(0) 
+        
+        # 先设置tep的下一个节点的值，再令tmp = tmp.next，tmp向后移动
+        # 以此类推构建出一条列表
+
 
         ans = ListNode(0)   # 头结点，无存储，指向链表第一个结点
         tmp = ans # 初始化链表结点

@@ -45,4 +45,4 @@ class Solution(object):
         if carry:
             res.insert(0,"1") 
         # print(res)
-        return "".join(res
+        return "".join(res)

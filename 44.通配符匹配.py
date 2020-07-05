@@ -27,6 +27,8 @@ class Solution:
         # 例如s='a',p='**a'
         # dp初始化后=[[T,F],[T,T],[T,F],[F,F]]--根据4-->[[T,F],[T,T],[T,T],[F,F]]
         # --根据5-->[[T,F],[T,T],[T,F],[F,T]]
+
+        # 参考图解:https://leetcode-cn.com/problems/wildcard-matching/solution/yi-ge-qi-pan-kan-dong-dong-tai-gui-hua-dpsi-lu-by-/
         
         # i代表列，j代表行
         i = len(s)+1

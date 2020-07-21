@@ -48,6 +48,6 @@ class Solution:
                         currTree.right = r
                         allTrees.append(currTree)
             
-            return allTrees
+            return allTrees  # 返回allTrees，就是返回该节点下的所有子树集合
         
         return helper(1, n) if n else []

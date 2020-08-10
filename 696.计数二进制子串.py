@@ -60,3 +60,32 @@ class Solution:
 
     
 
+    def countBinarySubstrings2(self, s: str) -> int:
+
+        # 核心思想
+        # 能不能在每次前一个相同元素个数与后一个相同元素个数比较的的时候，就直接对res进行操作，
+        # 不用在统计完后一个相同元素个数后，在进行比较取较小值
+        # 这样能进一步提升速度
+        
+        # cur：设定的当前元素值，默认为0
+        # pre：表示上一个相同元素的个数
+        # count：表示当前相同元素的个数
+        # res：表示几个
+
+        cur = pre = count = res = 0
+        for c in s:
+            if c == cur:
+                # 若当前元素与设定得当前元素值相同，则count加1
+                count += 1
+            else:
+                # 若不相同
+                pre = count  # pre记录上一个相同元素个数
+                cur = c  # 对cur进行重新设定
+                count = 1  # 设定当前相同元素的个数为1
+            
+            if pre >= count:  
+                # 若pre大于等于count，则res+1
+                # 因为：count是一个慢慢变大的过程，只要还不大于pre，之前的相同元素中，总能拿出元素与其匹配
+                res += 1
+
+        return res

@@ -31,7 +31,7 @@ class Solution:
 
         # 核心思想--回溯+剪枝
         
-        candidates = sorted(candidates)       
+        candidates = sorted(candidates)  # 对candidates进行排序      
         n = len(candidates)
         res =[]
         
@@ -51,8 +51,8 @@ class Solution:
                     # 从当前元素开始，old加上此元素，last减去当前元素
                     combination(i, old+[candidates[i]], last-candidates[i])  
                 if candidates[i] > last:
-                    # 如果当前元素 大于 last
-                    # 说明此次递归已结束，进行回溯，返回到上一层递归中
+                    # 如果当前元素 大于 last，由于已经对candidates进行排序了，后面的元素只会比当前元素更大
+                    # 所以此次递归已结束，进行回溯，返回到上一层递归中
                     # 上一层递归中的for循环i进入下一个数 
                     return
         combination(0, [], target)

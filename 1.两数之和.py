@@ -28,3 +28,5 @@ class Solution:
                 return [hashmap[another_num], index]
             hashmap[num] = index
         return None
+
+# 哈哈哈

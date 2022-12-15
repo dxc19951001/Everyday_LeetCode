@@ -37,7 +37,6 @@ class Solution(object):
             return first_match and self.isMatch(s[1:], p[1:])
 
 
-
 class Solution2(object):
     # 核心思想
     # 动态规划

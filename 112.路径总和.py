@@ -7,18 +7,24 @@ class TreeNode:
 class Solution:
     def hasPathSum(self, root: TreeNode, sum: int) -> bool:
 
-        # 核心思想
-        # 递归
-        # 每次递归传入左节点或右节点，并传入sum = sum - root.val
-        # 只要左节点或右节点其中一个返回true，则返回true
-        # 若计算到当前节点为叶子节点时（叶子节点是指没有子节点的节点，即当前节点没有左节点和右节点）
-        # 剩下的sum == 当前节点节点的值，则返回True，否则返回false
-        # 若递归至非叶子节点，但其左节点或右节点为空时，空节部分点直接返回false，
-        # 因为题目要求的路径是：根节点到叶子节点的路径
+        # 核心思想：前序遍历
+        # 递归参数，根节点，路径参数的和
 
+        # 递归终止条件，节点为空返回False
+        # 即循环到最后一个子节点都没有找到
         if not root:
             return False
+
+        # 单层递归
+        # 中
+        # 当没有左节点和右节点，即叶子节点时，判断路径上数字的和 与 目标值是否相等
         if not root.left and not root.right:
             return sum == root.val
-        return self.hasPathSum(root.left, sum - root.val) or self.hasPathSum(root.right, sum - root.val)
+
+        # 向左右子树进行递归时，传入左节点或右节点，同目标值减去当前节点的值
+        bool_left = self.hasPathSum(root.left, sum - root.val)  # 左
+        bool_right = self.hasPathSum(root.right, sum - root.val)  # 右
+
+        # 判断在 左子树 或 右子树上是否有满足目标值的和
+        return bool_left or bool_right
 

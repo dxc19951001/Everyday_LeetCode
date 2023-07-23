@@ -150,6 +150,23 @@ class Solution(object):
         
         return strs[0]
 
+    def longestCommonPrefix(self, strs):
+            """
+            :type strs: List[str]
+            :rtype: str
+            """
+
+            if not strs:  # 如果字符串数组为空，返回空字符串
+                return ""
+
+            prefix = strs[0]  # 从第一个字符串开始
+            for i in range(1, len(strs)):  # 对于每个其他字符串
+                while strs[i][:len(prefix)] != prefix:  # 如果它的前缀与当前前缀不同
+                    prefix = prefix[:-1]  # 将前缀的长度减 1
+                    if not prefix:  # 如果前缀长度为 0，返回空字符串
+                        return ""
+            return prefix
+
 
 
 

@@ -57,6 +57,26 @@ class Solution(object):
                 left += 1
         return res
 
+    def minSubArrayLen2(self, target, nums):
+        """
+        :type target: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        # 核心思想:滑动窗口
+        # 当数字之和大于等于target时，i向前移动
+        res = len(nums) + 1
+        sum_ = 0
+        i = 0
+        for j in range(len(nums)):
+            sum_ += nums[j]
+            while sum_ >= target:
+                res = min(res, j - i + 1)
+                sum_ -= nums[i]
+                i += 1
+
+        return res if res < len(nums) + 1 else 0
+
 
 s = Solution()
 x = 11

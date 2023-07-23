@@ -9,7 +9,7 @@ class TreeNode:
 
 class Solution:
     def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
-
+        # 其中 inorder 是二叉树的中序遍历， postorder 是同一棵树的后序遍历
         # 核心思想
         # 后序遍历的数组最后一个元素代表的即为根节点
         # 可以利用已知的根节点信息在中序遍历的数组中找到根节点所在的下标
@@ -21,8 +21,8 @@ class Solution:
             return None
         root = TreeNode(postorder[-1])  #  后序遍历的最后一个元素为根节点
         n = inorder.index(root.val)  # 找出在中序遍历中的下标
-        root.left = self.buildTree(inorder[:n],postorder[:n])  # 根据中序遍历划分左子树，后序遍历中的前n-1个元素属于左子树
-        root.right = self.buildTree(inorder[n+1:],postorder[n:-1])  # 根据中序遍历划分右子树，后序遍历中的n到倒数低2个元素属于右子树
+        root.left = self.buildTree(inorder[:n], postorder[:n])  # 根据中序遍历划分左子树，后序遍历中的前n-1个元素属于左子树
+        root.right = self.buildTree(inorder[n+1:], postorder[n:-1])  # 根据中序遍历划分右子树，后序遍历中的n到倒数第2个元素属于右子树
         return root
 
 

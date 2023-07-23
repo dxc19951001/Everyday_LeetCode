@@ -49,3 +49,36 @@ class Solution:
         helper()
 
         return res
+
+    def combinationSum4(self, k, n):
+        """
+        :type k: int
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        # 核心思想：回溯
+        res = []
+        sum_ = []
+        # 1.确定参数：确定回溯参数：n，k, startindex(每次循环的起始位置）
+        # 2.确定终止条件：
+        #   len(sum_) == k and sum(sum_) == n，则找到可需要的解
+        #   len(sum_) > k or sum(sum_) > n，则说明再往后找找不到了，进行剪枝
+        # 3.单层循环：
+        #   从1循环到10
+        def backtrack(k, n, startindex):
+            if len(sum_) == k and sum(sum_) == n:
+                res.append(sum_[:])
+                return
+
+            if len(sum_) > k or sum(sum_) > n:
+                return
+
+            for i in range(startindex, 10):
+                sum_.append(i)
+                # 由于数字不重复，startindex每次递归需要+1
+                backtrack(k, n, i + 1)
+                sum_.pop()
+
+        backtrack(k, n, 1)
+
+        return res

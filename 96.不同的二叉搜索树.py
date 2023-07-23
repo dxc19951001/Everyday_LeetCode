@@ -25,10 +25,10 @@ class Solution:
         dp[0] = 1
         dp[1] = 1
         
-        for i in range(2,n+1):
+        for i in range(2, n+1):
             # n+1是为了能够取到第n个数
             # 循环计算dp[i]，即长度为 i 的有序序列能构成的不同二叉搜索树的个数
-            for j in range(1,i+1):
+            for j in range(1, i+1):
                 # i+1是为了能够取到第i个数
                 # 从1开始循环，是因为：数值1, 2, ...i,作为根节点
                 # 此层循环作用：

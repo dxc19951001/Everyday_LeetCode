@@ -6,14 +6,21 @@ class TreeNode:
         self.right = None
 
 class Solution:
-    def invertTree(self, root: TreeNode) -> TreeNode:
+    class Solution(object):
+        def invertTree(self, root):
+            """
+            :type root: TreeNode
+            :rtype: TreeNode
+            """
+            # 按照前序遍历的思路
+            # 参数为root，返回值也为root
+            # 递归终止条件为root为空
+            # 在前序遍历的中间层，交换左右子节点
 
-        # 核心思想--递归
-        # 递归将左子树和右子树进行交换
+            if not root:
+                return root
 
-        if not root:
-            return None
-
-        root.left, root.right = self.invertTree(root.right), self.invertTree(root.left)
-        
-        return root
+            root.left, root.right = root.right, root.left
+            self.invertTree(root.left)
+            self.invertTree(root.right)
+            return root

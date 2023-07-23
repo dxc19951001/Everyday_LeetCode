@@ -1,4 +1,33 @@
 class Solution(object):
+
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        # 核心思想：背包问题
+        # dp[j]：长度为j的字符串，是否可以被拆分为一个或多个在字典中出现的单词，为布尔值
+        # 动态转移方程：
+        # 如果第i个单词不选，则dp[j] = dp[j]
+        # 如果选择第i个单词，
+        #   则长度为j的字符串已经用了j - len(wordDict[i]，根据dp定义判断dp[j - len(wordDict[i]]是True还是False
+        #   在判读，j剩余的字符串为从j - len(wordDict[i])到j，是否与第i个单词相等，wordDict[i] == s[j - len(wordDict[i]):j]
+        #   两个条件都满足的话，则第i个单词符合要求，返回True
+        # 初始值：
+        #   dp[0]就是递归的根基，dp[0]一定要为true
+
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+        # 遍历背包
+        for j in range(1, len(s) + 1):
+            # 遍历单词
+            for i in range(len(wordDict)):
+                if j >= len(wordDict[i]):
+                    dp[j] = dp[j] or (dp[j - len(wordDict[i])] and wordDict[i] == s[j - len(wordDict[i]):j])
+
+        return dp[-1]
+
     def wordBreak1(self, s, wordDict):
         """
         :type s: str
@@ -21,7 +50,7 @@ class Solution(object):
                     break
         return breakp[-1] == len(s)
 
-    def wordBreak(self, s, wordDict):
+    def wordBreak2(self, s, wordDict):
         """
         :type s: str
         :type wordDict: List[str]
@@ -59,3 +88,5 @@ class Solution(object):
                     dp[j] = True
 
         return dp[-1]
+
+

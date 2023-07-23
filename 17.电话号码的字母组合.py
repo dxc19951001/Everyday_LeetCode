@@ -67,3 +67,45 @@ class Solution:
         combinations = list()  # 最终返回结果
         backtrack(0)
         return combinations
+
+    def letterCombinations3(self, digits):
+        """
+        :type digits: str
+        :rtype: List[str]
+        """
+        # 核心思想：回溯
+        # 回溯参数：digits，index号码的下标，record记录的结果
+        # 终止条件：index == len(digits)，表明已经找到了对应长度的字符串
+        # 单层回溯：通过index找到字母，和进行回溯
+
+        if not digits:
+            return []
+
+        etter_map = {
+            '2': 'abc',
+            '3': 'def',
+            '4': 'ghi',
+            '5': 'jkl',
+            '6': 'mno',
+            '7': 'pqrs',
+            '8': 'tuv',
+            '9': 'wxyz'
+        }
+
+        res = []
+
+        def backtrack(digits, index, record):
+            if index == len(digits):
+                res.append(record)
+                return
+
+            letter = etter_map[digits[index]]
+
+            for i in letter:
+                record += i
+                backtrack(digits, index + 1, record)
+                record = record[:-1]
+
+        backtrack(digits, 0, "")
+
+        return res

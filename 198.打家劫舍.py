@@ -5,30 +5,30 @@ class Solution:
 
     def rob(self, nums: List[int]) -> int:
 
-        # 非递归，动态规划
-        # 核心思想：
-        # 从屋子选、不选的角度出发，使用动态规划，依次向前推到
-        # 选这间屋子时，是前n-2间房子能偷的最大值+这间屋子的前
-        # 不选这件屋子时为，前n-1房子所能偷的最大值
-        # 边界条件为：没有房间时返回0；1间房间只能偷此房间；2间房间偷2间中最大的
-        # 从而推导出有n间房时，能偷的最大金额
+        # 核心思想：动态规划
+        # dp[i]含义:偷第i间房子时所能得到的最大金额
+        # 动态转移方程：
+        #   不偷第i间房，则最大金额为偷上一间房的最大金额，即dp[i-1]
+        #   偷第i间房，则最大金额为偷上两间房的最大金额加上第i间房的金额，即 dp[i - 2] + nums[i]
+        #   取最大值 max(dp[i - 1], dp[i - 2] + nums[i])
+        # 初始状态：
+        #   初始都为0
 
         if not nums:
             return 0
 
-        size = len(nums)
-        if size == 1:
-            return nums[0]
-        
-        dp = [0] * size
+        if len(nums) <= 2:
+            return max(nums)
+
+        dp = [0] * len(nums)
+
         dp[0] = nums[0]
         dp[1] = max(nums[0], nums[1])
-        for i in range(2, size):
-            A = dp[i - 2] + nums[i]  # 选
-            B = dp[i - 1]  # 不选
-            dp[i] = max(A, B)
-        
-        return dp[size - 1]
+
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i])
+
+        return dp[-1]
     
     
     def rec_rob(self, nums, i) -> int:

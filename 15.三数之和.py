@@ -51,8 +51,8 @@ class Solution(object):
         
         # 由于三个数相加等于0，必然最小的数k要小于0
         # 所以当nums[k]大于等于0时，不可能存在解，直接break结束
-        # 当 k > 0且nums[k] == nums[k - 1]时即跳过此元素nums[k]：
-        # 因为已经将 nums[k - 1] 的所有组合加入到结果中，本次双指针搜索只会得到重复组合。
+        # 当 k > 0，第一个元素之后，当nums[k] == nums[k - 1]时，则跳过此元素nums[k]：
+        # 因为已经将 nums[k]和nums[k - 1]值相同， nums[k - 1]所有组合和nums[k]的组合重复了
 
         # i，j 分设在数组索引[k+1, len(nums)-1]两端，
         # 当i < j时循环计算s = nums[k] + nums[i] + nums[j]，并按照以下规则执行双指针移动：
@@ -69,7 +69,7 @@ class Solution(object):
                 # 大于0，三个数相加不可能等于0，直接跳出循环
                 break  
             if k > 0 and nums[k] == nums[k - 1]:
-                # 当k大于0时，判断k值是否重复，若重复直接进入下一轮循环
+                # 当k大于0时，判断nums[k]值是否重复，若重复直接进入下一轮循环
                 continue 
             i, j = k + 1, len(nums) - 1  # 设定双指针
             while i < j: 
@@ -99,6 +99,41 @@ class Solution(object):
                         # 跳过重复的j
                         j -= 1
         return res
+
+    def threeSum2(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        ans = []
+        nums.sort()
+
+        for i in range(len(nums)):
+            left = i + 1
+            right = len(nums) - 1
+            if nums[i] > 0:
+                return ans
+            if i >= 1 and nums[i] == nums[i - 1]:
+                # 对数字a去重
+                continue
+            while left < right:
+                total = nums[i] + nums[left] + nums[right]
+                if total < 0:
+                    left += 1
+                elif total > 0:
+                    right -= 1
+                else:
+                    ans.append([nums[i], nums[left], nums[right]])
+                    while left < right and nums[left] == nums[left + 1]:
+                        # 对数字b去重
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        # 对数字c去重
+                        right -= 1
+                    left += 1
+                    right -= 1
+
+        return ans
 
 
 s = Solution()

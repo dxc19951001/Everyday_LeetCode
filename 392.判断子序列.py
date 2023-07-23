@@ -21,7 +21,7 @@ class Solution:
         # i指向s的头部，j指向t的头部
         # 当i < n and j < m进行循环
         # 如果s[i] == t[j]，则i向后移动
-        # 如果不想等，则j往后移动
+        # 如果不相等，则j往后移动
         # 最终i==n，则说明完全匹配，返回true
 
         n, m = len(s), len(t)
@@ -31,4 +31,31 @@ class Solution:
                 i += 1
             j += 1
         return i == n
+
+
+    def isSubsequence2(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        # 动态规划解法
+        if not s:
+            return True
+
+        if not t:
+            return False
+
+        dp = [[False] * len(t) for _ in range(len(s))]
+
+        if s[0] in t:
+            ind = t.index(s[0])
+            dp[0][ind:] = [True] * (len(t) - ind)
+
+        for i in range(1, len(s)):
+            for j in range(1, len(t)):
+                if s[i] == t[j]:
+                    dp[i][j:] = [dp[i - 1][j - 1]] * (len(t) - j)
+
+        return dp[-1][-1]
 

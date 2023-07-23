@@ -59,6 +59,37 @@ class Solution:
         
         return res
 
+    def combinationSum3(self, candidates, target):
+        """
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        # 1.确定参数：确定回溯参数：candidates，target, startindex(每次循环的起始位置）
+        # 2.确定终止条件：
+        #   len(sum_) == k and sum(sum_) == n，则找到可需要的解
+        #   len(sum_) > k or sum(sum_) > n，则说明再往后找找不到了，进行剪枝
+        # 3.单层循环：
+        #   从1循环到10
+        res = []
+        sum_ = []
+
+        def backtrack(candidates, target, startindex):
+            if sum(sum_) == target:
+                res.append(sum_[:])
+                return
+            if sum(sum_) > target:
+                return
+
+            for i in range(startindex, len(candidates)):
+                sum_.append(candidates[i])
+                # 由于数字可以重复，startindex每次递归就位i
+                backtrack(candidates, target, i)
+                sum_.pop()
+
+        backtrack(candidates, target, 0)
+        return res
+
 s = Solution()
 
 candidates = [2,3,6,7]

@@ -8,18 +8,33 @@ class TreeNode:
 class Solution:
     def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
 
-        # 核心思想--DFS
-        # 分别对两棵树的左子树和右子树进行递归，可能出现四种情况
-        # 1.当递归到都为空节点时，则返回true
-        # 2.当一个树有值而另一棵树没有值得情况，返回false
-        # 3.当两颗数都有值，但值不相等，返回false
-        # 4.其他情况，则进入下一次递归，当两颗树的左子树和右子树相等时返回true
+        # 核心思想--后序遍历 左右中
+        # 通过后序遍历判断两颗树的左节点和右节点的是否相等
+        # 如果相等则相似返回到中节点
 
-        if not p and not q:
-            return True
-        elif not p or not q:
+        # 递归参数：
+        # p树的左节点，q树的左节点
+        # p树的右节点，q树的右节点
+        # 返回值：左节点和右节点进行布尔判断，都相等返回True
+
+        # 递归终止条件
+        # p为空，q不为空，返回F
+        # p不为空，q为空，返回T
+        # p和q都为空，返回T
+        # p和q的值不想等返回F
+        # 如果p和q值相等则继续想想下执行
+
+        if p is None and q is not None:
             return False
+        elif p is not None and q is None:
+            return False
+        elif p is None and q is None:
+            return True
         elif p.val != q.val:
             return False
-        else:
-            return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+
+        # 单层递归，分别对p和q的左右、节点进行判断
+        bool_left = self.isSameTree(p.left, q.left)
+        bool_right = self.isSameTree(p.right, q.right)
+        # 返回到中间节点是左节点和右节点的布尔值
+        return bool_left and bool_right
